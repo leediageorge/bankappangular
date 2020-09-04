@@ -9,13 +9,15 @@
       <div class="col">
         <form>
     <div class="form-group">
+      {{acno}}
               <label for="acno">Account Number</label>
-              <input (change)="acnoChange($event)" type="text" class="form-control" id="acno" aria-describedby="emailHelp">
+              <input [(ngModel)]="acno" name="acno" type="text" class="form-control" id="acno" aria-describedby="emailHelp">
               <small id="emailHelp" class="form-text text-muted">We'll never share your accountno with anyone else.</small>
             </div>
             <div class="form-group">
               <label for="pwd">Password</label>
-              <input (change)="pwdChange($event)" type="password" class="form-control" id="pwd">
+
+              <input [(ngModel)]="pwd" name="pwd" type="password" class="form-control" id="pwd">
             </div>
             <button type="button" class="btn btn-primary" (click)="login()">Submit</button>
           </form>

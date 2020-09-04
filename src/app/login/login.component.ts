@@ -14,9 +14,10 @@ export class LoginComponent implements OnInit {
 1005:{name:"user5",acno:1005,pin:1098,password:"userfive",balance:300}
 
 }
-acno="";
+acno="123456";
 pwd="";
   constructor() { }
+  ngOnInit(){}
   acnoChange(event){
    this.acno= event.target.value;
   }
@@ -28,7 +29,7 @@ pwd="";
   login(){
   var acno=parseInt(this.acno);//document.querySelector("#acno").value
   var password=this.pwd;//document.querySelector("#pwd").value
-  //alert(acno+","+password)
+  alert(acno+","+password)
   try{
     if(isNaN(acno)) throw "invalid Account Number"
     if(acno.toString().length<2) throw "Account number must be atleast 4 charactors"
@@ -43,6 +44,12 @@ pwd="";
       alert("login successful")
       window.location.href="userhome.html"
     }
+    else{
+      alert("incorrect password")
+    }
+  }
+  else{
+    alert("account no doesnot exists")
   }
   }
 
