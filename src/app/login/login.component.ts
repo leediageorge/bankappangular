@@ -1,56 +1,44 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { DataService } from '../services/data.service';
+import { FormBuilder, Validators } from '@angular/forms'
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
-  accountDetails={
-    1001:{name:"user1",acno:1001,pin:4387,password:"userone",balance:3000},
-    1002:{name:"user2",acno:1002,pin:1234,password:"usertwo",balance:3500},
-1003:{name:"user3",acno:1003,pin:1598,password:"userthree",balance:4000},
-1004:{name:"user4",acno:1004,pin:1095,password:"userfour",balance:3050},
-1005:{name:"user5",acno:1005,pin:1098,password:"userfive",balance:300}
+export class LoginComponent {
+  loginForm = this.fb.group({
+    
 
-}
-acno="123456";
-pwd="";
-  constructor() { }
+    acno:['',[Validators.required ]],
+    
+    pwd:['',[Validators.required ]],
+  
+  });
+  constructor(private router:Router,
+    private dataService:DataService, 
+    private fb:FormBuilder) { }
   ngOnInit(){}
-  acnoChange(event){
-   this.acno= event.target.value;
-  }
-  pwdChange(event){
-  
-   this.pwd= event.target.value;
+  getError(field){
+    return (this.loginForm.get(field).touched||this.loginForm.get(field).dirty)&&this.loginForm.get(field).errors
   }
   
-  login(){
-  var acno=parseInt(this.acno);//document.querySelector("#acno").value
-  var password=this.pwd;//document.querySelector("#pwd").value
-  alert(acno+","+password)
-  try{
-    if(isNaN(acno)) throw "invalid Account Number"
-    if(acno.toString().length<2) throw "Account number must be atleast 4 charactors"
-
-  }catch(error){
-    alert(error)
-  }
-  var data=this.accountDetails;
-  if (acno in data){
-    var pwd = data[acno].password
-    if (pwd==password){
-      alert("login successful")
-      window.location.href="userhome.html"
+  login() {
+    if(this.loginForm.valid){
+      const result =this.dataService.login(this.loginForm.value.acno,this.loginForm.value.pwd);
+    if(result){
+        alert("login successful");
+        this.router.navigateByUrl("dashboard")
+      }
+      else{
+        
+        alert("invalid credentials")
+      }
+    }else{
+      alert("form is invalid");
     }
-    else{
-      alert("incorrect password")
     }
-  }
-  else{
-    alert("account no doesnot exists")
-  }
-  }
-
-}
+    }
+  

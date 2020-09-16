@@ -7,19 +7,21 @@
     </div>
     <div class="row">
       <div class="col">
-        <form>
-    <div class="form-group">
-      {{acno}}
-              <label for="acno">Account Number</label>
-              <input [(ngModel)]="acno" name="acno" type="text" class="form-control" id="acno" aria-describedby="emailHelp">
-              <small id="emailHelp" class="form-text text-muted">We'll never share your accountno with anyone else.</small>
+          <form [formGroup]="loginForm" (ngSubmit)="login()">
+          <div class="form-group">
+       <label for="acno">Account Number</label>
+       <input formControlName="acno" name="acno" type="text" class="form-control" id="acno" aria-describedby="emailHelp">
+       <div *ngIf="getError('acno')" class="error">Account Number is invalid</div> 
+                 <small id="emailHelp" class="form-text text-muted">We'll never share your accountno with anyone else.</small>
             </div>
             <div class="form-group">
               <label for="pwd">Password</label>
-
-              <input [(ngModel)]="pwd" name="pwd" type="password" class="form-control" id="pwd">
+              <input formControlName="pwd" name="pwd" type="text" class="form-control" id="acno" aria-describedby="emailHelp">
+              <div *ngIf="getError('pwd')" class="error">Password is invalid</div> 
+                  
             </div>
-            <button type="button" class="btn btn-primary" (click)="login()">Submit</button>
+            <button type="submit" class="btn btn-primary" >Submit</button>
+          <a routerLink="register">Register</a>
           </form>
           </div>
         </div>
