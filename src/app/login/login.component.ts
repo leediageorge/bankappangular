@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from '../services/data.service';
-import { FormBuilder, Validators } from '@angular/forms'
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,36 +9,36 @@ import { FormBuilder, Validators } from '@angular/forms'
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  loginForm = this.fb.group({
-    
 
-    acno:['',[Validators.required ]],
-    
-    pwd:['',[Validators.required ]],
-  
+  loginForm = this.fb.group({
+    acno:['1001',[ Validators.required, Validators.pattern("^[0-9]*$") ]],
+    pwd:['userone',[ Validators.required ]],
   });
+
   constructor(private router:Router,
-    private dataService:DataService, 
+    private dataService: DataService,
     private fb:FormBuilder) { }
-  ngOnInit(){}
+
   getError(field){
-    return (this.loginForm.get(field).touched||this.loginForm.get(field).dirty)&&this.loginForm.get(field).errors
+    return (this.loginForm.get(field).touched||this.loginForm.get(field).dirty)&&this.loginForm.get(field).errors;
   }
-  
-  login() {
+
+  login(){
     if(this.loginForm.valid){
-      const result =this.dataService.login(this.loginForm.value.acno,this.loginForm.value.pwd);
-    if(result){
-        alert("login successful");
-        this.router.navigateByUrl("dashboard")
-      }
-      else{
-        
-        alert("invalid credentials")
-      }
+      this.dataService.login(this.loginForm.value.acno,this.loginForm.value.pwd)
+      .subscribe((data:any)=>{
+        if(data){
+          localStorage.setItem("name",data.name)
+          alert('Login Successful')
+          this.router.navigateByUrl("dashboard")
+        }else{
+          alert('Invalid credentials')
+        }
+      },(data)=>{
+        alert(data.error.message)
+      })
     }else{
-      alert("form is invalid");
+      alert("Form is invalid");
     }
-    }
-    }
-  
+  }
+}
